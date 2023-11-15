@@ -18,9 +18,21 @@
 
 #include "SIMPLESOCKET.H"
 
+class myServer : public TCPserver{
+    public:
+
+    myServer(int port, int msgSize) : TCPserver(port, msgSize){
+    };
+
+    string myResponse(string input){
+        return string("MYRESPONSE:");
+    }
+
+};
+
 
 int main(){
 	srand(time(nullptr));
-	TCPserver srv(2022,25);
+	myServer srv(2030,25);
 	srv.run();
 }

@@ -192,7 +192,7 @@ string TCPserver::response(string incomingMsg){
 	return msg;
 }
 
-
+// Überschreiben - was er bekommt und was er zurückschickt
 string TCPserver::myResponse(string input){
 	return string("NO DATA YET YET YET");
 }
