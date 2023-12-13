@@ -18,6 +18,10 @@
 
 #include "SIMPLESOCKET.H"
 
+
+//#include "TASK1.C"
+//#include "TASK1.H"
+
 class myServer : public TCPserver{
     public:
 
@@ -25,7 +29,7 @@ class myServer : public TCPserver{
     };
 
     string myResponse(string input){
-        return string("MYRESPONSE:");
+        return string("Hallo");
     }
 
 };

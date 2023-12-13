@@ -19,6 +19,8 @@ string BlackBoxUnsafe::getSymbols(){
 	return string(charSymbArray_);
 };
 
+
+//Konstruktor
 BlackBoxUnsafe::BlackBoxUnsafe(int pwdLength, int symbSetSize){
 	if((symbSetSize < 1) || (symbSetSize > SYMBOLS.length()) ){
 		lengthSymbArray_ = SYMBOLS.length();
@@ -62,7 +64,7 @@ void demoTASK1_00(){
 }
 
 void demoTASK1_01(){
-	TASK1::BlackBoxUnsafe bs(4,4);
+	TASK1::BlackBoxUnsafe bs(10,10);
 	cout << bs.pwd_ << endl;
 
 	cout << bs.input(bs.pwd_) << endl;
