@@ -11,20 +11,22 @@
 
 #include "SIMPLESOCKET.H"
 
-//#include "TASK1.C"
-//#include "TASK1.H"
+#include "TASK1.H"
+
+#define PWDLAENGE 4
+#define ALPLAENGE 4
 
 using namespace std;
 
 
-string randompwd(int lengthpwd){
+string randompwd(int lengthpwd,int lengthsymb){
 
-    const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const string characters = "ABCDEFGHIJKLMNOPQRTSTUVWXYZabcdefghijklmopqrstuvwxyz0123456789";
     string pwd;
 
     for(int i =0; i < lengthpwd; i++)
     {
-        int rdmIdx = rand() % lengthpwd;
+        int rdmIdx = rand() %lengthsymb;
         pwd += characters[rdmIdx];
     }
 
@@ -38,30 +40,29 @@ int main() {
 	string host = "localhost";
 	string msg;
 
-    int lengthpwd = 3;
-
 	//connect to host
 	c.conn(host , 2030);
 
 	int i=0;
 	bool goOn=1;
 	while(goOn){ // send and receive data
-	/*
-		if((rand() % 20) < i++){
-			msg = string("BYEBYE");
-			goOn = 0;
-		}else{
-			msg = string("client wants this");
-		}
-		*/
 
-        msg = string(randompwd(lengthpwd));
+        msg = string(randompwd(PWDLAENGE,ALPLAENGE));
 
 		cout << "client sends:" << msg << endl;
 		c.sendData(msg);
+
 		msg = c.receive(32);
 		cout << "got response:" << msg << endl;
-		sleep(1);
+
+		if(msg == "ACCESS ACCEPTED")
+		{
+            msg = string("BYEBYE");
+            c.sendData(msg);
+            goOn = 0;
+		}
+
+		//sleep(1);
 
 	}
 }
