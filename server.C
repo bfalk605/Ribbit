@@ -54,7 +54,7 @@ bool myServer::checkPwd(string input){
 
 void myServer::newPwd(){
     delete bs;
-
+    bs = new TASK1::BlackBoxSafe (PWDLAENGE,ALPLAENGE);
     return;
 }
 
