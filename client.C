@@ -14,7 +14,8 @@
 #include "TASK1.H"
 
 #define PWDLAENGE 4
-#define ALPLAENGE 4
+#define ALPLAENGE 8
+#define DURCHLAUF 10
 
 using namespace std;
 
@@ -43,28 +44,44 @@ int main() {
 	//connect to host
 	c.conn(host , 2030);
 
-	int i=0;
-	bool goOn=1;
-	while(goOn){ // send and receive data
-
-        msg = string(randompwd(PWDLAENGE,ALPLAENGE));
-
-		cout << "client sends:" << msg << endl;
-		c.sendData(msg);
-
-		msg = c.receive(32);
-		cout << "got response:" << msg << endl;
-
-		if(msg == "ACCESS ACCEPTED")
-		{
-            msg = string("BYEBYE");
+	for(int i=0; i<DURCHLAUF; i++)
+        {
+            msg = "NEWPWD";
+            //cout << "client sends:" << msg << endl;
             c.sendData(msg);
-            goOn = 0;
-		}
+            msg = c.receive(32);
+            //cout << "got response:" << msg << endl;
 
-		//sleep(1);
+            bool goOn=1;
+            int counter=0;
 
+            // send and receive data
+            while(goOn){
+                counter++;
+                msg = string(randompwd(PWDLAENGE,ALPLAENGE));
+
+                //cout << "client sends:" << msg << endl;
+                c.sendData(msg);
+
+                msg = c.receive(32);
+                //cout << "got response:" << msg << endl;
+
+                if(msg == "ACCESS ACCEPTED")
+                {
+                    cout << "Durchlauf: " << (i+1) <<" --- amount tries: " << counter << endl;
+                    //cout << "ACCESS ACCEPTED" << msg << endl;
+                    //msg = string("BYEBYE");
+                    //c.sendData(msg);
+                    counter = 0;
+                    goOn = 0;
+                }
+        }
 	}
+	msg = "BYEBYE";
+    //cout << "client sends:" << msg << endl;
+    c.sendData(msg);
+    msg = c.receive(32);
+    //cout << "got response:" << msg << endl;
 }
 
 

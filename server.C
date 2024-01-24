@@ -21,7 +21,7 @@
 #include "TASK1.H"
 
 #define PWDLAENGE 4
-#define ALPLAENGE 4
+#define ALPLAENGE 8
 
 
 class myServer : public TCPserver{
@@ -39,7 +39,6 @@ class myServer : public TCPserver{
 myServer::myServer(int port, int msgSize) : TCPserver(port, msgSize)
     {
         bs = new TASK1::BlackBoxSafe (PWDLAENGE,ALPLAENGE);
-        counter = 0;
     }
 
 bool myServer::checkPwd(string input){
@@ -61,16 +60,19 @@ void myServer::newPwd(){
 string myServer::myResponse(string input){
     counter ++;
 
-        if(checkPwd(input) == false)
+    if(input == "NEWPWD")
+    {
+        newPwd();
+        return string("NEWPWD CREATED");
+    }
+    else if(checkPwd(input) == false)
         {
-            cout << " -----------------------" << endl;
-            return string("ACCESS DENIED");
+        cout << " -----------------------" << endl;
+        return string("ACCESS DENIED");
         }
-        else{
-            cout << " -----------------------" << endl;
-            cout << "total trys: " << counter << endl;
-            counter = 0;
-            return string("ACCESS ACCEPTED");
+    else{
+        cout << " -----------------------" << endl;
+        return string("ACCESS ACCEPTED");
         }
     }
 
