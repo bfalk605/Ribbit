@@ -12,6 +12,7 @@
 #include "SIMPLESOCKET.H"
 
 #include "TASK1.H"
+#include "SHA256.H"
 
 #define PWDLAENGE 4
 #define ALPLAENGE 8
@@ -19,38 +20,45 @@
 
 using namespace std;
 
+class myClient : public TCPclient{
+    public:
+    myClient() : TCPclient(){};
+    string randompwd(int lengthpwd, int lengthsymb);
 
-string randompwd(int lengthpwd,int lengthsymb){
+};
 
-    const string characters = "ABCDEFGHIJKLMNOPQRTSTUVWXYZabcdefghijklmopqrstuvwxyz0123456789";
+
+string myClient::randompwd(int lengthpwd,int lengthsymb){
+
     string pwd;
 
     for(int i =0; i < lengthpwd; i++)
     {
         int rdmIdx = rand() %lengthsymb;
-        pwd += characters[rdmIdx];
+        pwd += TASK1::SYMBOLS[rdmIdx];
     }
 
     return pwd;
-
 }
+
 
 int main() {
 	srand(time(NULL));
-	TCPclient c;
+	myClient c;
 	string host = "localhost";
 	string msg;
 
 	//connect to host
-	c.conn(host , 2030);
+	c.conn(host , 2022);
+
+	cout << "PWDLAENGE: " << PWDLAENGE << endl;
+	cout << "ALPLAENGE: " << ALPLAENGE << endl;
 
 	for(int i=0; i<DURCHLAUF; i++)
         {
             msg = "NEWPWD";
-            //cout << "client sends:" << msg << endl;
             c.sendData(msg);
             msg = c.receive(32);
-            //cout << "got response:" << msg << endl;
 
             bool goOn=1;
             int counter=0;
@@ -58,30 +66,23 @@ int main() {
             // send and receive data
             while(goOn){
                 counter++;
-                msg = string(randompwd(PWDLAENGE,ALPLAENGE));
+                msg = string(c.randompwd(PWDLAENGE,ALPLAENGE));
 
-                //cout << "client sends:" << msg << endl;
                 c.sendData(msg);
-
                 msg = c.receive(32);
-                //cout << "got response:" << msg << endl;
 
                 if(msg == "ACCESS ACCEPTED")
                 {
-                    cout << "Durchlauf: " << (i+1) <<" --- amount tries: " << counter << endl;
-                    //cout << "ACCESS ACCEPTED" << msg << endl;
-                    //msg = string("BYEBYE");
-                    //c.sendData(msg);
+                    //cout << "Durchlauf: " << (i+1) <<" --- amount tries: " << endl;
+                    cout << counter << endl;
                     counter = 0;
                     goOn = 0;
                 }
         }
 	}
 	msg = "BYEBYE";
-    //cout << "client sends:" << msg << endl;
     c.sendData(msg);
-    msg = c.receive(32);
-    //cout << "got response:" << msg << endl;
+    return 0;
 }
 
 

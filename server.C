@@ -30,7 +30,7 @@ class myServer : public TCPserver{
     int counter;
 
     public:
-    myServer(int port, int msgSize);// : TCPserver(port, msgSize);
+    myServer(int port, int msgSize);
     string myResponse(string input);
     void newPwd();
     bool checkPwd(string input);
@@ -78,6 +78,7 @@ string myServer::myResponse(string input){
 
 int main(){
 	srand(time(nullptr));
-	myServer srv(2030,25);
+	myServer srv(2022,25);
 	srv.run();
+	return 0;
 }
